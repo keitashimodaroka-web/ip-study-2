@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知財検定2級 演習（第52回 全40問）</title>
+    <title>知財検定2級 第52回 学科40問</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; max-width: 800px; margin: 0 auto; line-height: 1.6; }
         .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -20,7 +20,6 @@
     <div class="progress" id="progress">回答済み: 0 / 40</div>
     <h1>第52回 学科試験 対策アプリ（全40問）</h1>
     <div id="quiz"></div>
-
     <script>
         const quizData = [
             { q: "職務発明の権利帰属（契約による会社帰属）", choices: ["ア：可能","イ：不可能","ウ：特許庁の許可が必要","エ：同意が必要"], ans: 0, exp: "特許法33条の2。あらかじめ定めておけば原始的に会社帰属になります。" },
@@ -64,12 +63,9 @@
             { q: "不競法：原産地の誤認表示", choices: ["ア：許される","イ：不正競争になる","ウ：特許庁が取り締まる","エ：関税法のみ対象"], ans: 1, exp: "産地などを偽る表示は禁止です。" },
             { q: "著作権：譲渡できない権利", choices: ["ア：複製権","イ：著作者人格権","ウ：譲渡権","エ：放送権"], ans: 1, exp: "人格権は譲渡できません。" }
         ];
-
-        let score = 0;
-        let answeredCount = 0;
         const container = document.getElementById('quiz');
         const progress = document.getElementById('progress');
-
+        let score = 0; let answeredCount = 0;
         quizData.forEach((d, idx) => {
             const div = document.createElement('div');
             div.className = 'card';
@@ -78,21 +74,13 @@
                 `<div id="exp${idx}" class="exp">${d.exp}</div>`;
             container.appendChild(div);
         });
-
         function check(qIdx, cIdx) {
-            const d = quizData[qIdx];
-            const exp = document.getElementById('exp' + qIdx);
+            const d = quizData[qIdx]; const exp = document.getElementById('exp' + qIdx);
             if(exp.style.display === 'block') return;
             const btns = document.querySelectorAll(`.card:nth-child(${qIdx+2}) .btn`);
-            if(cIdx === d.ans) {
-                btns[cIdx].classList.add('correct');
-                score++;
-            } else {
-                btns[cIdx].classList.add('incorrect');
-                btns[d.ans].classList.add('correct');
-            }
-            exp.style.display = 'block';
-            answeredCount++;
+            if(cIdx === d.ans) { btns[cIdx].classList.add('correct'); score++; }
+            else { btns[cIdx].classList.add('incorrect'); btns[d.ans].classList.add('correct'); }
+            exp.style.display = 'block'; answeredCount++;
             progress.innerText = `回答済み: ${answeredCount} / 40 (正解数: ${score})`;
         }
     </script>

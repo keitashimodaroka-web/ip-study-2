@@ -7,110 +7,91 @@
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; }
-        .case-box { background: #fff8e1; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-size: 0.95em; white-space: pre-wrap; }
-        .question-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .case-box { background: #fff8e1; border-left: 5px solid #ffc107; padding: 20px; margin-bottom: 25px; border-radius: 4px; font-size: 0.95em; white-space: pre-wrap; line-height: 1.8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .question-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #e0e0e0; }
         .q-header { font-weight: bold; color: #1a73e8; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .choice-list { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
-        .choice-btn { padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: #fff; cursor: pointer; text-align: left; }
-        .choice-btn:hover { background: #f8f9fa; }
-        .correct { background-color: #d4edda !important; border-color: #28a745 !important; }
+        .choice-btn { padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: #fff; cursor: pointer; text-align: left; font-size: 14px; transition: 0.2s; }
+        .choice-btn:hover { background: #f8f9fa; border-color: #1a73e8; }
+        .correct { background-color: #d4edda !important; border-color: #28a745 !important; font-weight: bold; }
         .incorrect { background-color: #f8d7da !important; border-color: #dc3545 !important; }
-        .explanation { display: none; margin-top: 15px; padding: 12px; background: #e3f2fd; border-radius: 5px; border-left: 4px solid #2196f3; }
-        .nav-buttons { text-align: center; margin-top: 30px; }
-        .nav-btn { padding: 10px 20px; background: #555; color: white; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px; border-left: 4px solid #2196f3; font-size: 0.9em; }
+        h1 { color: #2c3e50; text-align: center; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>知財検定2級 実技演習</h1>
+        <h1>知財検定2級 実技演習（第52回）</h1>
         
-        <div id="quiz-container">
-            </div>
-
-        <div class="nav-buttons">
-            <a href="gakusha.html" class="nav-btn">← 学科編へ戻る</a>
-        </div>
+        <div id="quiz-container"></div>
     </div>
 
     <script>
-        // 実技試験のサンプルデータ（アップロードされた第50回等の形式）
         const practicalData = [
             {
-                case: "【事例：特許出願の戦略】\nドローンメーカーX社の開発者甲は、新たな発光装置aと制御装置bを備えるドローンAを発明した。知財部の乙は、先行技術調査を行ったところ、発光装置aについては既に文献Bに記載されているが、制御装置bについては未公刊であることを突き止めた。",
+                case: "【事例1：自動運転自転車の特許出願】\n甲は2024年10月10日に特許出願P（発明A）をした。調査の結果、以下の事実が判明した。\n\n事実1：乙が2023年2月2日に特許出願Q（発明A記載）をし、出願公開された（文献1）。\n事実2：甲自身が2024年4月4日に特許出願R（発明Aと同じ発明B）をし、2024年10月30日に特許公報が発行された（文献2）。",
                 questions: [
                     {
-                        id: "第50回 問1",
-                        q: "乙は、請求項1に「発光装置aと、制御装置bとを備えるドローン」を記載した。この請求項1に記載された発明の進歩性の判断において、最も適切と考えられるものはどれか。",
-                        choices: ["ア 文献Bに記載された発明に基づき、当業者が容易に発明できたとはいえない。", "イ 文献Bに記載された発明と、周知技術である制御装置を組み合わせることは、常に容易である。", "ウ 制御装置bが新規であれば、組み合わせに関わらず進歩性が否定されることはない。"],
-                        answer: 0,
-                        exp: "【正解: ア】 文献Bにない制御装置bという新規な構成要素が含まれており、その組み合わせが容易でない限り進歩性は認められます。"
-                    }
-                ]
-            },
-            {
-                case: "【事例：著作権の侵害】\n映画製作会社X社は、漫画家甲が描いた漫画を原作としたアニメ映画を製作した。その後、第三者Yがこのアニメ映画のワンシーンをSNSに無断でアップロードした。",
-                questions: [
+                        id: "第52回 問1・2",
+                        q: "特許出願Pについて、文献1（乙の出願）を引用して拒絶されるか？またその理由は？",
+                        choices: [
+                            "ア：拒絶されない",
+                            "イ：拒絶される（新規性欠如：29条1項）",
+                            "ウ：拒絶される（拡大先願：29条の2）",
+                            "エ：拒絶される（先願：39条）"
+                        ],
+                        answer: 1,
+                        exp: "【正解: イ】 文献1は乙によってすでに出願公開されているため、甲が出願Pをした時点ですでに公知の技術です。したがって、新規性（特許法29条1項）により拒絶されます。"
+                    },
                     {
-                        id: "第51回 問35",
-                        q: "Yの行為について、著作権法上の判断として最も適切なものはどれか。",
-                        choices: ["ア 引用の要件を満たしていれば、無断アップロードであっても侵害とはならない。", "イ SNSへの投稿は私的使用のための複製に該当するため、常に許諾は不要である。", "ウ アニメ映画の著作権は漫画家甲に帰属するため、X社は権利行使できない。"],
-                        answer: 0,
-                        exp: "【正解: ア】 著作権法32条（引用）の要件をすべて満たせば、適法に利用可能です。イ：公衆送信は私的使用の範囲を超えます。ウ：映画の著作権は原則として映画製作者（X社）に帰属します。"
+                        id: "第52回 問3・4",
+                        q: "特許出願Pについて、文献2（甲自身の別出願R）を引用して拒絶されるか？またその理由は？",
+                        choices: [
+                            "ア：拒絶されない",
+                            "イ：拒絶される（新規性欠如）",
+                            "ウ：拒絶される（先願：39条）",
+                            "エ：拒絶される（公序良俗違反）"
+                        ],
+                        answer: 2,
+                        exp: "【正解: ウ】 同一人が同じ発明を二度出願した場合、29条の2（拡大先願）は適用されませんが、39条（先願）は適用されます。後に出願したPは拒絶されます。"
                     }
                 ]
             }
         ];
 
-        function renderPractical() {
+        function render() {
             const container = document.getElementById('quiz-container');
             practicalData.forEach((block, bIdx) => {
-                // 事例の表示
                 const caseDiv = document.createElement('div');
                 caseDiv.className = 'case-box';
                 caseDiv.innerText = block.case;
                 container.appendChild(caseDiv);
 
-                // 各設問の表示
                 block.questions.forEach((q, qIdx) => {
                     const card = document.createElement('div');
                     card.className = 'question-card';
-                    const uniqueId = `b${bIdx}-q${qIdx}`;
-                    card.innerHTML = `
-                        <div class="q-header">${q.id}</div>
-                        <p>${q.q}</p>
-                        <div class="choice-list" id="choices-${uniqueId}">
-                            ${q.choices.map((c, i) => `
-                                <button class="choice-btn" onclick="checkAnswer('${uniqueId}', ${i}, ${q.answer})">${c}</button>
-                            `).join('')}
-                        </div>
-                        <div id="exp-${uniqueId}" class="explanation"></div>
-                    `;
+                    const uId = `b${bIdx}-q${qIdx}`;
+                    card.innerHTML = `<div class="q-header">${q.id}</div><p>${q.q}</p>
+                        <div class="choice-list" id="choices-${uId}">${q.choices.map((c, i) => 
+                            `<button class="choice-btn" onclick="check('${uId}',${i},${q.answer})">${c}</button>`).join('')}</div>
+                        <div id="exp-${uId}" class="explanation"></div>`;
                     container.appendChild(card);
                 });
             });
         }
 
-        function checkAnswer(id, selected, correct) {
-            const btns = document.getElementById(`choices-${id}`).getElementsByTagName('button');
+        function check(id, selected, correct) {
             const exp = document.getElementById(`exp-${id}`);
-            
-            if (exp.style.display === 'block') return; // すでに回答済みなら何もしない
-
-            if (selected === correct) {
-                btns[selected].classList.add('correct');
-            } else {
-                btns[selected].classList.add('incorrect');
-                btns[correct].classList.add('correct');
-            }
-
-            // 解説を表示
-            const blockIdx = id.split('-')[0].replace('b', '');
-            const qIdx = id.split('-')[1].replace('q', '');
-            exp.innerText = practicalData[blockIdx].questions[qIdx].exp;
+            if (exp.style.display === 'block') return;
+            const btns = document.getElementById(`choices-${id}`).getElementsByTagName('button');
+            if (selected === correct) { btns[selected].classList.add('correct'); }
+            else { btns[selected].classList.add('incorrect'); btns[correct].classList.add('correct'); }
+            const bIdx = id.split('-')[0].replace('b','');
+            const qIdx = id.split('-')[1].replace('q','');
+            exp.innerText = practicalData[bIdx].questions[qIdx].exp;
             exp.style.display = 'block';
         }
-
-        renderPractical();
+        render();
     </script>
 </body>
 </html>

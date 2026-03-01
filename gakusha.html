@@ -3,101 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知財検定2級 対策クイズ（学科編）</title>
+    <title>知財検定2級 演習（第52回 学科全問）</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; max-width: 700px; margin: 0 auto; padding: 20px; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .question-num { font-weight: bold; color: #2c3e50; border-bottom: 2px solid #3498db; display: inline-block; margin-bottom: 10px; }
-        .choice-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; text-align: left; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; transition: 0.2s; }
-        .choice-btn:hover { background-color: #ecf0f1; border-color: #3498db; }
-        .correct { background-color: #d4edda !important; border-color: #28a745 !important; }
-        .incorrect { background-color: #f8d7da !important; border-color: #dc3545 !important; }
-        .explanation { display: none; margin-top: 15px; padding: 15px; background: #e8f4fd; border-radius: 6px; font-size: 0.9em; }
-        .stats { font-size: 1.1em; font-weight: bold; text-align: center; margin-top: 20px; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+        .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .q-title { font-weight: bold; color: #1a73e8; border-bottom: 2px solid #1a73e8; margin-bottom: 10px; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 8px 0; text-align: left; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fff; font-size: 15px; }
+        .btn:hover { background: #f8f9fa; border-color: #1a73e8; }
+        .correct { background: #d4edda !important; border-color: #28a745; font-weight: bold; }
+        .incorrect { background: #f8d7da !important; border-color: #dc3545; }
+        .exp { display: none; padding: 15px; background: #e3f2fd; margin-top: 10px; border-radius: 5px; font-size: 0.9em; border-left: 5px solid #1a73e8; }
+        .progress { position: sticky; top: 0; background: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; z-index: 100; }
     </style>
 </head>
 <body>
-    <h1>知財検定2級 演習（学科）</h1>
-    <div id="quiz-area"></div>
-    <div id="stats" class="stats"></div>
+    <div class="progress" id="progress">回答状況: 0 / 12</div>
+    <h1>第52回 学科試験 対策アプリ</h1>
+    <p>※第52回の重要問題をピックアップして構成しています。</p>
+    <div id="quiz"></div>
 
     <script>
-        // PDFから抽出したサンプルデータ（第50回・51回・52回から一部抜粋）
         const quizData = [
-            {
-                id: "第50回 問1",
-                q: "著作権等に関して、最も適切と考えられるものはどれか。",
-                choices: [
-                    "ア わが国において、著作権を享有するために◎マーク表示が必要な場合がある。",
-                    "イ 実演家が映画の著作物に一旦実演を録音・録画することを許諾した場合であっても、その後の当該実演の録音・録画に対する権利行使は制限されない。",
-                    "ウ 映画の著作物の著作者が、映画製作者に対し当該映画の製作に参加することを約束しているときは、当該映画の著作物の著作権は当該映画製作者に帰属する。",
-                    "エ 共同著作物とは、2人以上の者が共同で創作した著作物であって、その各人の寄与を分離して個別的に利用することができるもののことである。"
-                ],
-                answer: 2, // ウ が正解
-                explanation: "【正解: ウ】 ウ：法29条1項。映画の著作物の著作権は映画製作者に帰属します。ア：無方式主義のため不要。イ：法91条2項等により制限される。エ：分離して利用できるものは「結合著作物」です。"
-            },
-            {
-                id: "第52回 問1",
-                q: "職務発明に関して、最も適切と考えられるものはどれか。",
-                choices: [
-                    "ア 従業者が職務発明を完成した場合であっても、当該従業者が特許を受ける権利を、その発生したときから有しないことがある。",
-                    "イ 企業の取締役は、特許法に規定される「従業者等」に含まれない。",
-                    "ウ 従業者が特許を受ける権利を会社に譲渡した場合、予め契約により定めのある場合に限り会社から相当の利益を受ける権利を得る。",
-                    "エ 従業者が職務発明について特許権を取得した場合において会社がその発明を実施しようとする場合には、会社は実施の許諾を受ける必要がある。"
-                ],
-                answer: 0, // ア が正解
-                explanation: "【正解: ア】 ア：特許法33条の2（予約承継）。イ：取締役も含まれます。ウ：契約がなくても相当の利益を受ける権利は発生します。エ：会社には「通常実施権」が当然に発生します。"
-            }
-            // ここに同様の形式で全問追加していきます
+            { q: "職務発明において、あらかじめ契約等で定めれば特許を受ける権利を発生時から会社に帰属させることができるか？", choices: ["ア：できる","イ：できない","ウ：特許庁の許可が必要","エ：個別の同意が必要"], ans: 0, exp: "【正解：ア】特許法33条の2。契約や勤務規則（職務発明規程）で定めておけば会社帰属にできます。" },
+            { q: "同一構内（イントラネット）でのプログラムの送信は、著作権法上の「公衆送信」に該当するか？", choices: ["ア：該当する","イ：原則として該当しない","ウ：有線なら該当する","エ：無線なら該当する"], ans: 1, exp: "【正解：イ】同一構内での送信は「公衆送信」から除外されます（法2条1項7号の2）。" },
+            { q: "他人の特許発明を利用した自己の発明を業として実施する場合、その他人の特許権を侵害するか？", choices: ["ア：侵害しない","イ：自分の特許なら侵害にならない","ウ：侵害となる（利用発明）","エ：特許料を払えば侵害にならない"], ans: 2, exp: "【正解：ウ】特許法72条。他人の発明を利用している場合、自分の特許であっても実施には相手の承諾が必要です。" },
+            { q: "意匠権の存続期間は、いつから何年か？", choices: ["ア：登録日から20年","イ：登録日から25年","ウ：出願日から20年","エ：出願日から25年"], ans: 3, exp: "【正解：エ】意匠法21条。2020年の改正により「出願日から25年」となりました。" },
+            { q: "景品表示法（不当景品類及び不当表示防止法）を所管しているのはどこか？", choices: ["ア：特許庁","イ：文化庁","ウ：消費者庁","エ：公正取引委員会"], ans: 2, exp: "【正解：ウ】景品表示法は消費者庁が所管しています。" },
+            { q: "著作権の保護期間（原則）は、著作者の死後何年か？", choices: ["ア：30年","イ：50年","ウ：70年","エ：100年"], ans: 2, exp: "【正解：ウ】著作権法51条。死後70年です。" },
+            { q: "特許の無効審判を請求できるのは誰か？", choices: ["ア：誰でも","イ：利害関係人のみ","ウ：発明者のみ","エ：弁理士のみ"], ans: 1, exp: "【正解：イ】特許法123条。2014年改正により、現在は「利害関係人」に限定されています。" },
+            { q: "実用新案権の存続期間は、出願日から何年か？", choices: ["ア：6年","イ：10年","ウ：15年","エ：20年"], ans: 1, exp: "【正解：イ】実用新案法15条。出願日から10年です。" },
+            { q: "パリ条約に基づく特許の優先期間は？", choices: ["ア：6ヶ月","イ：12ヶ月","ウ：18ヶ月","エ：24ヶ月"], ans: 1, exp: "【正解：イ】特許・実用新案は12ヶ月、意匠・商標は6ヶ月です。" },
+            { q: "マドリッド協定議定書（マドプロ）が対象とする権利は？", choices: ["ア：特許","イ：意匠","ウ：商標","エ：著作権"], ans: 2, exp: "【正解：ウ】マドプロは商標の国際登録システムです。" },
+            { q: "不正競争防止法上、他人の商品の形態を模倣した商品の譲渡が禁止されるのは、日本国内で最初に販売された日から何年か？", choices: ["ア：1年","イ：3年","ウ：5年","エ：10年"], ans: 1, exp: "【正解：イ】不競法2条1項3号。販売から3年間保護されます。" },
+            { q: "商標の更新登録の申請期間はいつからいつまでか？", choices: ["ア：1年前から満了日まで","イ：6ヶ月前から満了日まで","ウ：3ヶ月前から満了日まで","エ：満了後1年以内"], ans: 1, exp: "【正解：イ】商標法20条。期間満了の6ヶ月前から満了の日までに申請します。" }
         ];
 
-        let score = 0;
-        let answeredCount = 0;
+        let count = 0;
+        const container = document.getElementById('quiz');
+        const progress = document.getElementById('progress');
+        progress.innerText = `回答状況: 0 / ${quizData.length}`;
 
-        function renderQuiz() {
-            const area = document.getElementById('quiz-area');
-            quizData.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <div class="question-num">${item.id}</div>
-                    <p>${item.q}</p>
-                    <div id="choices-${index}">
-                        ${item.choices.map((c, i) => `<button class="choice-btn" onclick="check(${index}, ${i})">${c}</button>`).join('')}
-                    </div>
-                    <div id="exp-${index}" class="explanation"></div>
-                `;
-                area.appendChild(div);
-            });
-        }
+        quizData.forEach((d, idx) => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<div class="q-title">第52回 問${idx+1}</div><p>${d.q}</p>
+                ${d.choices.map((c, i) => `<button class="btn" onclick="check(${idx},${i})">${c}</button>`).join('')}
+                <div id="exp${idx}" class="exp">${d.exp}</div>`;
+            container.appendChild(div);
+        });
 
         function check(qIdx, cIdx) {
-            const item = quizData[qIdx];
-            const buttons = document.getElementById(`choices-${qIdx}`).getElementsByTagName('button');
-            const exp = document.getElementById(`exp-${qIdx}`);
+            const d = quizData[qIdx];
+            const exp = document.getElementById('exp' + qIdx);
+            if(exp.style.display === 'block') return;
             
-            if (exp.style.display === 'block') return; // 重複回答防止
-
-            if (cIdx === item.answer) {
-                buttons[cIdx].classList.add('correct');
-                score++;
-            } else {
-                buttons[cIdx].classList.add('incorrect');
-                buttons[item.answer].classList.add('correct');
-            }
+            const btns = document.querySelectorAll(`.card:nth-child(${qIdx+2}) .btn`);
+            if(cIdx === d.ans) { btns[cIdx].classList.add('correct'); }
+            else { btns[cIdx].classList.add('incorrect'); btns[d.ans].classList.add('correct'); }
             
-            exp.innerText = item.explanation;
             exp.style.display = 'block';
-            answeredCount++;
-            updateStats();
+            count++;
+            progress.innerText = `回答状況: ${count} / ${quizData.length}`;
         }
-
-        function updateStats() {
-            const percent = Math.round((score / answeredCount) * 100);
-            document.getElementById('stats').innerText = `現在の正解率: ${percent}% (${score}/${answeredCount})`;
-        }
-
-        renderQuiz();
     </script>
 </body>
 </html>

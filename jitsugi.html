@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知財検定2級 対策（実技編）</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .case-box { background: #fff8e1; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-size: 0.95em; white-space: pre-wrap; }
+        .question-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .q-header { font-weight: bold; color: #1a73e8; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .choice-list { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+        .choice-btn { padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: #fff; cursor: pointer; text-align: left; }
+        .choice-btn:hover { background: #f8f9fa; }
+        .correct { background-color: #d4edda !important; border-color: #28a745 !important; }
+        .incorrect { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+        .explanation { display: none; margin-top: 15px; padding: 12px; background: #e3f2fd; border-radius: 5px; border-left: 4px solid #2196f3; }
+        .nav-buttons { text-align: center; margin-top: 30px; }
+        .nav-btn { padding: 10px 20px; background: #555; color: white; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>知財検定2級 実技演習</h1>
+        
+        <div id="quiz-container">
+            </div>
+
+        <div class="nav-buttons">
+            <a href="gakusha.html" class="nav-btn">← 学科編へ戻る</a>
+        </div>
+    </div>
+
+    <script>
+        // 実技試験のサンプルデータ（アップロードされた第50回等の形式）
+        const practicalData = [
+            {
+                case: "【事例：特許出願の戦略】\nドローンメーカーX社の開発者甲は、新たな発光装置aと制御装置bを備えるドローンAを発明した。知財部の乙は、先行技術調査を行ったところ、発光装置aについては既に文献Bに記載されているが、制御装置bについては未公刊であることを突き止めた。",
+                questions: [
+                    {
+                        id: "第50回 問1",
+                        q: "乙は、請求項1に「発光装置aと、制御装置bとを備えるドローン」を記載した。この請求項1に記載された発明の進歩性の判断において、最も適切と考えられるものはどれか。",
+                        choices: ["ア 文献Bに記載された発明に基づき、当業者が容易に発明できたとはいえない。", "イ 文献Bに記載された発明と、周知技術である制御装置を組み合わせることは、常に容易である。", "ウ 制御装置bが新規であれば、組み合わせに関わらず進歩性が否定されることはない。"],
+                        answer: 0,
+                        exp: "【正解: ア】 文献Bにない制御装置bという新規な構成要素が含まれており、その組み合わせが容易でない限り進歩性は認められます。"
+                    }
+                ]
+            },
+            {
+                case: "【事例：著作権の侵害】\n映画製作会社X社は、漫画家甲が描いた漫画を原作としたアニメ映画を製作した。その後、第三者Yがこのアニメ映画のワンシーンをSNSに無断でアップロードした。",
+                questions: [
+                    {
+                        id: "第51回 問35",
+                        q: "Yの行為について、著作権法上の判断として最も適切なものはどれか。",
+                        choices: ["ア 引用の要件を満たしていれば、無断アップロードであっても侵害とはならない。", "イ SNSへの投稿は私的使用のための複製に該当するため、常に許諾は不要である。", "ウ アニメ映画の著作権は漫画家甲に帰属するため、X社は権利行使できない。"],
+                        answer: 0,
+                        exp: "【正解: ア】 著作権法32条（引用）の要件をすべて満たせば、適法に利用可能です。イ：公衆送信は私的使用の範囲を超えます。ウ：映画の著作権は原則として映画製作者（X社）に帰属します。"
+                    }
+                ]
+            }
+        ];
+
+        function renderPractical() {
+            const container = document.getElementById('quiz-container');
+            practicalData.forEach((block, bIdx) => {
+                // 事例の表示
+                const caseDiv = document.createElement('div');
+                caseDiv.className = 'case-box';
+                caseDiv.innerText = block.case;
+                container.appendChild(caseDiv);
+
+                // 各設問の表示
+                block.questions.forEach((q, qIdx) => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+                    const uniqueId = `b${bIdx}-q${qIdx}`;
+                    card.innerHTML = `
+                        <div class="q-header">${q.id}</div>
+                        <p>${q.q}</p>
+                        <div class="choice-list" id="choices-${uniqueId}">
+                            ${q.choices.map((c, i) => `
+                                <button class="choice-btn" onclick="checkAnswer('${uniqueId}', ${i}, ${q.answer})">${c}</button>
+                            `).join('')}
+                        </div>
+                        <div id="exp-${uniqueId}" class="explanation"></div>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+        }
+
+        function checkAnswer(id, selected, correct) {
+            const btns = document.getElementById(`choices-${id}`).getElementsByTagName('button');
+            const exp = document.getElementById(`exp-${id}`);
+            
+            if (exp.style.display === 'block') return; // すでに回答済みなら何もしない
+
+            if (selected === correct) {
+                btns[selected].classList.add('correct');
+            } else {
+                btns[selected].classList.add('incorrect');
+                btns[correct].classList.add('correct');
+            }
+
+            // 解説を表示
+            const blockIdx = id.split('-')[0].replace('b', '');
+            const qIdx = id.split('-')[1].replace('q', '');
+            exp.innerText = practicalData[blockIdx].questions[qIdx].exp;
+            exp.style.display = 'block';
+        }
+
+        renderPractical();
+    </script>
+</body>
+</html>

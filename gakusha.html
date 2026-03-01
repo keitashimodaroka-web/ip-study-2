@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知財検定2級 対策クイズ（学科編）</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; max-width: 700px; margin: 0 auto; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .question-num { font-weight: bold; color: #2c3e50; border-bottom: 2px solid #3498db; display: inline-block; margin-bottom: 10px; }
+        .choice-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; text-align: left; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; transition: 0.2s; }
+        .choice-btn:hover { background-color: #ecf0f1; border-color: #3498db; }
+        .correct { background-color: #d4edda !important; border-color: #28a745 !important; }
+        .incorrect { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; background: #e8f4fd; border-radius: 6px; font-size: 0.9em; }
+        .stats { font-size: 1.1em; font-weight: bold; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>知財検定2級 演習（学科）</h1>
+    <div id="quiz-area"></div>
+    <div id="stats" class="stats"></div>
+
+    <script>
+        // PDFから抽出したサンプルデータ（第50回・51回・52回から一部抜粋）
+        const quizData = [
+            {
+                id: "第50回 問1",
+                q: "著作権等に関して、最も適切と考えられるものはどれか。",
+                choices: [
+                    "ア わが国において、著作権を享有するために◎マーク表示が必要な場合がある。",
+                    "イ 実演家が映画の著作物に一旦実演を録音・録画することを許諾した場合であっても、その後の当該実演の録音・録画に対する権利行使は制限されない。",
+                    "ウ 映画の著作物の著作者が、映画製作者に対し当該映画の製作に参加することを約束しているときは、当該映画の著作物の著作権は当該映画製作者に帰属する。",
+                    "エ 共同著作物とは、2人以上の者が共同で創作した著作物であって、その各人の寄与を分離して個別的に利用することができるもののことである。"
+                ],
+                answer: 2, // ウ が正解
+                explanation: "【正解: ウ】 ウ：法29条1項。映画の著作物の著作権は映画製作者に帰属します。ア：無方式主義のため不要。イ：法91条2項等により制限される。エ：分離して利用できるものは「結合著作物」です。"
+            },
+            {
+                id: "第52回 問1",
+                q: "職務発明に関して、最も適切と考えられるものはどれか。",
+                choices: [
+                    "ア 従業者が職務発明を完成した場合であっても、当該従業者が特許を受ける権利を、その発生したときから有しないことがある。",
+                    "イ 企業の取締役は、特許法に規定される「従業者等」に含まれない。",
+                    "ウ 従業者が特許を受ける権利を会社に譲渡した場合、予め契約により定めのある場合に限り会社から相当の利益を受ける権利を得る。",
+                    "エ 従業者が職務発明について特許権を取得した場合において会社がその発明を実施しようとする場合には、会社は実施の許諾を受ける必要がある。"
+                ],
+                answer: 0, // ア が正解
+                explanation: "【正解: ア】 ア：特許法33条の2（予約承継）。イ：取締役も含まれます。ウ：契約がなくても相当の利益を受ける権利は発生します。エ：会社には「通常実施権」が当然に発生します。"
+            }
+            // ここに同様の形式で全問追加していきます
+        ];
+
+        let score = 0;
+        let answeredCount = 0;
+
+        function renderQuiz() {
+            const area = document.getElementById('quiz-area');
+            quizData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <div class="question-num">${item.id}</div>
+                    <p>${item.q}</p>
+                    <div id="choices-${index}">
+                        ${item.choices.map((c, i) => `<button class="choice-btn" onclick="check(${index}, ${i})">${c}</button>`).join('')}
+                    </div>
+                    <div id="exp-${index}" class="explanation"></div>
+                `;
+                area.appendChild(div);
+            });
+        }
+
+        function check(qIdx, cIdx) {
+            const item = quizData[qIdx];
+            const buttons = document.getElementById(`choices-${qIdx}`).getElementsByTagName('button');
+            const exp = document.getElementById(`exp-${qIdx}`);
+            
+            if (exp.style.display === 'block') return; // 重複回答防止
+
+            if (cIdx === item.answer) {
+                buttons[cIdx].classList.add('correct');
+                score++;
+            } else {
+                buttons[cIdx].classList.add('incorrect');
+                buttons[item.answer].classList.add('correct');
+            }
+            
+            exp.innerText = item.explanation;
+            exp.style.display = 'block';
+            answeredCount++;
+            updateStats();
+        }
+
+        function updateStats() {
+            const percent = Math.round((score / answeredCount) * 100);
+            document.getElementById('stats').innerText = `現在の正解率: ${percent}% (${score}/${answeredCount})`;
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>
